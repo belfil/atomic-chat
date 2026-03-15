@@ -20,7 +20,7 @@ class ActorsTableTest extends TestCase
     public function test_create_table_with_new_table_name()
     {
         $tableName = 'custom_actors_table';
-        config(['atomic-chat.models.actor.table' => $tableName]);
+        config(['atomic-chat.core.models.actor.table' => $tableName]);
         $this->migrateFresh();
         $this->assert($tableName);
     }

@@ -20,7 +20,7 @@ class MembersTableTest extends TestCase
     public function test_create_members_table_with_custom_name(): void
     {
         $table = 'custom_chat_members';
-        config(['atomic-chat.models.member.table' => $table]);
+        config(['atomic-chat.core.models.member.table' => $table]);
         $this->migrateFresh();
         $this->assertMemberStructure($table);
     }
@@ -33,7 +33,6 @@ class MembersTableTest extends TestCase
             'chat_id',
             'actor_id',
             'last_read_id',
-            'role',
             'created_at',
             'updated_at',
         ]);

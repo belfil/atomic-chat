@@ -20,7 +20,7 @@ class ChatsTableTest extends TestCase
     public function test_create_table_with_new_table_name()
     {
         $tableName = 'custom_chats_table';
-        config(['atomic-chat.models.chat.table' => $tableName]);
+        config(['atomic-chat.core.models.chat.table' => $tableName]);
         $this->migrateFresh();
         $this->assert($tableName);
     }
@@ -30,12 +30,11 @@ class ChatsTableTest extends TestCase
         $this->assertTrue(Schema::hasTable($table));
         $this->assertEqualColumns($table, [
             'id',
-            'uuid',
             'type',
-            'title',
+            'hash',
             'created_at',
             'updated_at',
         ]);
-        $this->assertIndexExists($table, $table . '_unique_uuid');
+        $this->assertIndexExists($table, $table . '_unique_hash');
     }
 }
