@@ -33,21 +33,21 @@ trait Database
 
     protected function actorTableName()
     {
-        return config('atomic-chat.models.actor.table');
+        return config('atomic-chat.core.models.actor.table');
     }
 
     protected function chatTableName()
     {
-        return config('atomic-chat.models.chat.table');
+        return config('atomic-chat.core.models.chat.table');
     }
 
     protected function memberTableName()
     {
-        return config('atomic-chat.models.member.table');
+        return config('atomic-chat.core.models.member.table');
     }
 
     protected function messageTableName()
     {
-        return config('atomic-chat.models.message.table');
+        return config('atomic-chat.core.models.message.table');
     }
 }
