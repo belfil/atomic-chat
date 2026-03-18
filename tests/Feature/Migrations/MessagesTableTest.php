@@ -8,7 +8,7 @@ use Belfil\AtomicChat\Tests\Helpers\Database;
 use Belfil\AtomicChat\Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
 
-class MessageTest extends TestCase
+class MessagesTableTest extends TestCase
 {
     use Database;
 

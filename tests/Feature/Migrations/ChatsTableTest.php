@@ -8,19 +8,19 @@ use Belfil\AtomicChat\Tests\Helpers\Database;
 use Belfil\AtomicChat\Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
 
-class ActorTest extends TestCase
+class ChatsTableTest extends TestCase
 {
     use Database;
 
     public function test_create_table_with_default_table_name()
     {
-        $this->assert($this->actorTableName());
+        $this->assert($this->chatTableName());
     }
 
     public function test_create_table_with_new_table_name()
     {
-        $tableName = 'custom_actors_table';
-        config(['atomic-chat.models.actor.table' => $tableName]);
+        $tableName = 'custom_chats_table';
+        config(['atomic-chat.models.chat.table' => $tableName]);
         $this->migrateFresh();
         $this->assert($tableName);
     }
@@ -30,11 +30,12 @@ class ActorTest extends TestCase
         $this->assertTrue(Schema::hasTable($table));
         $this->assertEqualColumns($table, [
             'id',
-            'actorable_id',
-            'actorable_type',
+            'uuid',
+            'type',
+            'title',
             'created_at',
             'updated_at',
         ]);
-        $this->assertIndexExists($table, $table . '_unique_actorable');
+        $this->assertIndexExists($table, $table . '_unique_uuid');
     }
 }
