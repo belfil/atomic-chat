@@ -8,20 +8,19 @@ use Belfil\AtomicChat\Tests\Helpers\Database;
 use Belfil\AtomicChat\Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
 
-class MemberTest extends TestCase
+class MembersTableTest extends TestCase
 {
     use Database;
 
     public function test_create_members_table_with_default_name(): void
     {
-        $table = config('atomic-chat.tables.members.name');
-        $this->assertMemberStructure($table);
+        $this->assertMemberStructure($this->memberTableName());
     }
 
     public function test_create_members_table_with_custom_name(): void
     {
         $table = 'custom_chat_members';
-        config(['atomic-chat.tables.members.name' => $table]);
+        config(['atomic-chat.core.models.member.table' => $table]);
         $this->migrateFresh();
         $this->assertMemberStructure($table);
     }
@@ -34,7 +33,6 @@ class MemberTest extends TestCase
             'chat_id',
             'actor_id',
             'last_read_id',
-            'role',
             'created_at',
             'updated_at',
         ]);

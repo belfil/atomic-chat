@@ -7,24 +7,22 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    private const CONFIG_KEY = 'atomic-chat.tables.chats';
+    private const CONFIG_TABLE_NAME = 'atomic-chat.core.models.chat.table';
 
     public function up(): void
     {
-        $tableSettings = config(self::CONFIG_KEY);
-        $tableName = $tableSettings['name'];
-        Schema::create($tableName, function (Blueprint $table) use ($tableName) {
+        $tableName = config(self::CONFIG_TABLE_NAME);
+        Schema::create($tableName, function(Blueprint $table) use ($tableName) {
             $table->id();
-            $table->uuid()->unique($tableName . '_unique_uuid');
-            $table->string('type')->default('private');
-            $table->string('title')->default('');
+            $table->string('hash')->nullable();
+            $table->string('type')->default('');
             $table->timestamps();
+            $table->unique(['hash'], $tableName . '_unique_hash');
         });
     }
 
     public function down(): void
     {
-        $tableSettings = config(self::CONFIG_KEY);
-        Schema::dropIfExists($tableSettings['name']);
+        Schema::dropIfExists(config(self::CONFIG_TABLE_NAME));
     }
 };

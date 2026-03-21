@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Belfil\AtomicChat\Tests;
 
-use Belfil\AtomicChat\AtomicChatServiceProvider;
+use Belfil\AtomicChat\Core\ServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -12,7 +12,8 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            AtomicChatServiceProvider::class,
+            ServiceProvider::class,
+            \Belfil\AtomicChat\Stream\ServiceProvider::class,
         ];
     }
 
@@ -31,5 +32,6 @@ abstract class TestCase extends Orchestra
     protected function defineDatabaseMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/Helpers/Migrations');
     }
 }

@@ -8,20 +8,19 @@ use Belfil\AtomicChat\Tests\Helpers\Database;
 use Belfil\AtomicChat\Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
 
-class MessageTest extends TestCase
+class MessagesTableTest extends TestCase
 {
     use Database;
 
     public function test_create_messages_table_with_default_name(): void
     {
-        $table = config('atomic-chat.tables.messages.name');
-        $this->assertMessageStructure($table);
+        $this->assertMessageStructure($this->messageTableName());
     }
 
     public function test_create_messages_table_with_custom_name(): void
     {
         $table = 'custom_chat_messages';
-        config(['atomic-chat.tables.messages.name' => $table]);
+        config(['atomic-chat.core.models.message.table' => $table]);
         $this->migrateFresh();
         $this->assertMessageStructure($table);
     }
@@ -32,12 +31,12 @@ class MessageTest extends TestCase
         $this->assertEqualColumns($table, [
             'id',
             'chat_id',
-            'sender_id',
+            'actor_id',
             'content',
             'created_at',
             'updated_at',
         ]);
         $this->assertIndexExists($table, $table . '_chat_id_idx');
-        $this->assertIndexExists($table, $table . '_sender_id_idx');
+        $this->assertIndexExists($table, $table . '_actor_id_idx');
     }
 }

@@ -2,17 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Belfil\AtomicChat;
-
+use Belfil\AtomicChat\Stream\Builders\CoreMessageBuilder;
 use Illuminate\Support\ServiceProvider;
+use Private\Builders\PrivateChat;
 
-class AtomicChatServiceProvider extends ServiceProvider
+class ServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
      */
     public function boot(): void
     {
+        //        $this->app->bind(ChatProxy::class, function ($app, $params) {
+        //            return new ChatProxy($params['actor']);
+        //        });
+        $this->app->bind(PrivateChat::class, function($app, $params) {
+            $chat = $params['chat'] ?? (new (config('atomic-chat.core.models.chat.class')));
+            return new PrivateChat($chat);
+        });
+        $this->app->bind(CoreMessageBuilder::class, function($app, $params) {
+            $message = $params['message'] ?? (new (config('atomic-chat.core.models.message.class')));
+            return new CoreMessageBuilder($message);
+        });
         /*
          * Optional methods to load your package assets
          */
@@ -50,6 +61,17 @@ class AtomicChatServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/atomic-chat.php', 'atomic-chat');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/atomic-chat.php', 'atomic-chat');
+        $this->registerFeatures();
+    }
+
+    protected function registerFeatures(): void
+    {
+        $modules = config('atomic-chat.modules', []);
+        foreach ($modules as $module => $settings) {
+            if ($settings['enabled'] ?? false) {
+                $this->app->register($this->getModuleProvider($module));
+            }
+        }
     }
 }

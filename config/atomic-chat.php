@@ -2,19 +2,46 @@
 
 declare(strict_types=1);
 
+use Belfil\AtomicChat\Core\Models\CoreChat;
+use Belfil\AtomicChat\Core\Models\CoreMessage;
+use Belfil\AtomicChat\Stream\ServiceProvider;
+
 return [
-    'tables' => [
-        'actors' => [
-            'name' => 'atomic_actors',
+    /*
+    |--------------------------------------------------------------------------
+    | Core Entities
+    |--------------------------------------------------------------------------
+    */
+    'core' => [
+        'models' => [
+            'actor' => [
+                'table' => 'atomic_actors',
+                'class' => null,
+            ],
+            'chat' => [
+                'table' => 'atomic_chats',
+                'class' => CoreChat::class,
+            ],
+            'message' => [
+                'table' => 'atomic_messages',
+                'class' => CoreMessage::class,
+            ],
+            'member' => [
+                'table' => 'atomic_members',
+                'class' => null,
+            ],
         ],
-        'chats' => [
-            'name' => 'atomic_chats',
-        ],
-        'members' => [
-            'name' => 'atomic_members',
-        ],
-        'messages' => [
-            'name' => 'atomic_messages',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Modules
+    |--------------------------------------------------------------------------
+    */
+    'modules' => [
+        'stream' => [
+            'enabled' => true,
+            'provider' => ServiceProvider::class,
         ],
     ],
 ];
