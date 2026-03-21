@@ -1,43 +1,141 @@
-# Atomic Chat
+# ⚛️ Atomic Chat
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/belfil/atomic-chat.svg?style=flat-square)](https://packagist.org/packages/belfil/atomic-chat)
-[![Total Downloads](https://img.shields.io/packagist/dt/belfil/atomic-chat.svg?style=flat-square)](https://packagist.org/packages/belfil/atomic-chat)
-![GitHub Actions](https://github.com/belfil/atomic-chat/actions/workflows/main.yml/badge.svg)
+[![Latest Version](https://img.shields.io/packagist/v/belfil/atomic-chat.svg?style=flat-square)](https://packagist.org/packages/belfil/atomic-chat)  
+![GitHub Actions](https://github.com)  
+[![License](https://img.shields.io)](LICENSE.md)
 
-Atomic-fast, scalable messaging SDK for Laravel.
-Native Reverb support, advanced file management, and modular architecture for private groups and broadcast channels.
+**Atomic-fast, scalable messaging engine for Laravel.**
 
-> [!WARNING]
-> **Atomic Chat is currently under development.**
+Built for high-performance applications with native **Laravel Reverb** support, a modular architecture, and a clean Fluent API.
 
-## Installation
+> ⚠️ **Status:** Atomic Chat is currently in **Alpha**. Expect changes.
 
-You can install the package via composer:
+---
+
+## ✨ Features
+
+- 🧩 **Actors System**  
+  Attach any Eloquent model (User, Bot, Company) to conversations.
+
+- 🔗 **Fluent Builder API**  
+  Elegant, chainable syntax for creating chats and messages.
+
+- 🧱 **Modular Architecture**  
+  Enable only what you need:
+    - Streams
+    - Private Chats
+    - Groups
+
+- ⚡ **Performance First**  
+  Optimized indexes and efficient "read receipts" via watermarks.
+
+---
+
+## 🚀 Installation
+
+Install via Composer:
 
 ```bash
 composer require belfil/atomic-chat
 ```
 
-## Usage
-
-```php
-// Usage description here
-```
-
-### Testing
+Publish config (optional but recommended):
 
 ```bash
-composer test
+php artisan vendor:publish --tag="atomic-chat-config"
 ```
 
-### Changelog
+Run migrations:
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+```bash
+php artisan migrate
+```
 
-## Credits
+---
 
-- [Philip Belousov](https://github.com/belfil)
+## 💬 Quick Start
 
-## License
+### 1. Stream Conversations
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Streams are the simplest chat type — ideal for logs, feeds, or public messaging.
+
+```php
+use Belfil\AtomicChat\Stream\Models\StreamChat;
+
+// Create a stream
+$chat = StreamChat::new()->save();
+```
+
+---
+
+### 2. Send Messages
+
+Using the Chat instance:
+
+```php
+$chat->message()
+    ->content('Hello Atomic World! ⚛️')
+    ->save();
+```
+
+Or via Message Builder:
+
+```php
+use Belfil\AtomicChat\Stream\Models\StreamMessage;
+
+StreamMessage::new()
+    ->content('Fluent API is awesome')
+    ->chat($chat)
+    ->save();
+```
+
+---
+
+### 3. Retrieve Messages
+
+Standard Eloquent relationships:
+
+```php
+$messages = $chat->messages()
+    ->latest()
+    ->get();
+```
+
+---
+
+## 🧩 Modules
+
+Atomic Chat is fully modular. Configure modules in:
+
+`config/atomic-chat.php`
+
+```php
+'modules' => [
+    'stream' => [
+        'enabled' => true,
+        'provider' => \Belfil\AtomicChat\Stream\ServiceProvider::class,
+    ],
+],
+```
+
+---
+
+## 🛣️ Roadmap
+
+- [ ] Private chats module
+- [ ] Group conversations
+- [ ] WebSocket
+- [ ] Message reactions
+- [ ] Attachments
+
+---
+
+## 🤝 Contributing
+
+PRs, ideas, and feedback are welcome — especially during Alpha.
+
+---
+
+## 📄 License
+
+See [LICENSE.md](LICENSE.md)
